@@ -15,18 +15,12 @@ router.post('/create', (req, res) => {
   const promisesToSaveTo = req.body.to.map(promiseToSave);
   const promisesToSaveCc = req.body.cc.map(promiseToSave);
   const promisesToSaveBcc = req.body.bcc.map(promiseToSave);
-  const promiseToGetToIds = Promise.all(promisesToSaveTo).then((addresses) => {
-    const to = addresses.map(addr => addr._id);
-    return to;
-  });
-  const promiseToGetCcIds = Promise.all(promisesToSaveCc).then((addresses) => {
-    const cc = addresses.map(addr => addr._id);
-    return cc;
-  });
-  const promiseToGetBccIds = Promise.all(promisesToSaveBcc).then((addresses) => {
-    const bcc = addresses.map(addr => addr._id);
-    return bcc;
-  });
+  const promiseToGetToIds = Promise.all(promisesToSaveTo).then(
+    addresses => addresses.map(addr => addr._id));
+  const promiseToGetCcIds = Promise.all(promisesToSaveCc).then(
+    addresses => addresses.map(addr => addr._id));
+  const promiseToGetBccIds = Promise.all(promisesToSaveBcc).then(
+    addresses => addresses.map(addr => addr._id));
 
   Promise.all([promiseToGetToIds, promiseToGetCcIds, promiseToGetBccIds]).then((values) => {
     const to = values[0];
