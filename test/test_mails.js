@@ -11,34 +11,25 @@ describe('/api/mails/create', function() {
       subject: 'This is the test subject.',
       recipient: 'getogrand',
       secretCode: 'secret',
-      to: [
-        {
-          address: 'kyunooh@sh8.email',
-          name: 'Kyunoohhh',
-        },
-        {
-          address: 'getogrand@sh8.email',
-          name: 'Getogrand!',
-        },
-      ],
-      from: [
-        {
-          address: 'downy@sh8.email',
-          name: 'Downyyy',
-        },
-      ],
-      cc: [
-        {
-          address: 'rivermountain@sh8.email',
-          name: 'River and Mountain',
-        },
-      ],
-      bcc: [
-        {
-          address: 'hyndeeeee@sh8.email',
-          name: 'Hyndeeeee@@',
-        },
-      ],
+      to: [{
+        address: 'kyunooh@sh8.email',
+        name: 'Kyunoohhh',
+      }, {
+        address: 'getogrand@sh8.email',
+        name: 'Getogrand!',
+      }],
+      from: [{
+        address: 'downy@sh8.email',
+        name: 'Downyyy',
+      }],
+      cc: [{
+        address: 'rivermountain@sh8.email',
+        name: 'River and Mountain',
+      }],
+      bcc: [{
+        address: 'hyndeeeee@sh8.email',
+        name: 'Hyndeeeee@@',
+      }],
       date: new Date(),
       messageId: 'testmessageid',
       text: 'This is the test text.',
