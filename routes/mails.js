@@ -42,7 +42,7 @@ router.post('/create', (req, res) => {
   }).then((mail) => {
     res.send({
       success: true,
-      mailId: mail._id,
+      mailId: mail.id,
     });
   });
 });
