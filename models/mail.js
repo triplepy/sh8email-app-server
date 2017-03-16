@@ -2,14 +2,19 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const addressSchema = new Schema({
+  address: String,
+  name: String,
+});
+
 const Mail = mongoose.model('Mail', new Schema({
   subject: String,
   recipient: String,
   secretCode: String,
-  to: [Schema.Types.ObjectId],
-  from: [Schema.Types.ObjectId],
-  cc: [Schema.Types.ObjectId],
-  bcc: [Schema.Types.ObjectId],
+  to: [addressSchema],
+  from: [addressSchema],
+  cc: [addressSchema],
+  bcc: [addressSchema],
   date: Date,
   messageId: String,
   html: String,
