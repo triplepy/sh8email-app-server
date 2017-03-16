@@ -40,7 +40,9 @@ describe('/api/mails/create', function() {
         },
       ],
       date: new Date(),
+      messageId: 'testmessageid',
       text: 'This is the test text.',
+      html: '<p>test html</p>',
     }).expect(200).then((res) => {
       res.body.success.should.equal(true);
       res.body.mailId.should.not.empty();
