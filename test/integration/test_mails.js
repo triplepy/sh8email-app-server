@@ -4,9 +4,9 @@ const request = require('supertest');
 const factory = require('factory-girl').factory;
 const _ = require('lodash');
 require('should');
-const Mail = require('../models/mail');
+const Mail = require('../../models/mail');
 
-const app = require('../app');
+const app = require('../../app');
 
 const assertMailField = (field, actual, expected) => {
   _.zip(actual[field], expected[field]).forEach((zipped) => {
