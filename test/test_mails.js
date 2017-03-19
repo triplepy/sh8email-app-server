@@ -8,6 +8,15 @@ const Mail = require('../models/mail');
 
 const app = require('../app');
 
+const assertMailField = (field, actual, expected) => {
+  _.zip(actual[field], expected[field]).forEach((z) => {
+    const s = z[0];
+    const e = z[1];
+    s.address.should.equal(e.address);
+    s.name.should.equal(e.name);
+  });
+};
+
 describe('/api/mails/create', function() {
   it('should save a mail successfully', function(done) {
     let expected;
@@ -18,9 +27,7 @@ describe('/api/mails/create', function() {
       res.body.success.should.equal(true);
       res.body.mailId.should.not.empty();
 
-      // TODO assert the db values
       return Mail.findById(res.body.mailId);
-      // TODO seperate these assertions
     }).then((saved) => {
       saved.subject.should.equal(expected.subject);
       saved.recipient.should.equal(expected.recipient);
@@ -29,30 +36,10 @@ describe('/api/mails/create', function() {
       saved.messageId.should.equal(expected.messageId);
       saved.text.should.equal(expected.text);
       saved.html.should.equal(expected.html);
-      _.zip(saved.to, expected.to).forEach((z) => {
-        const s = z[0];
-        const e = z[1];
-        s.address.should.equal(e.address);
-        s.name.should.equal(e.name);
-      });
-      _.zip(saved.from, expected.from).forEach((z) => {
-        const s = z[0];
-        const e = z[1];
-        s.address.should.equal(e.address);
-        s.name.should.equal(e.name);
-      });
-      _.zip(saved.cc, expected.cc).forEach((z) => {
-        const s = z[0];
-        const e = z[1];
-        s.address.should.equal(e.address);
-        s.name.should.equal(e.name);
-      });
-      _.zip(saved.bcc, expected.bcc).forEach((z) => {
-        const s = z[0];
-        const e = z[1];
-        s.address.should.equal(e.address);
-        s.name.should.equal(e.name);
-      });
+      assertMailField('to', saved, expected);
+      assertMailField('from', saved, expected);
+      assertMailField('cc', saved, expected);
+      assertMailField('bcc', saved, expected);
     }).then(done).catch(done);
   });
 });
