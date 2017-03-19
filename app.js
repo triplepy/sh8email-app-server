@@ -9,6 +9,9 @@ const config = require('config');
 // routers
 const mails = require('./routes/mails');
 
+// factory-girl setup
+require('./fixture-factory');
+
 // database setup
 mongoose.connect(config.dbUri);
 // Use native promises
