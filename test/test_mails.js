@@ -32,6 +32,7 @@ describe('/api/mails/create', function() {
       saved.subject.should.equal(expected.subject);
       saved.recipient.should.equal(expected.recipient);
       saved.secretCode.should.equal(expected.secretCode);
+      // You should use eql instead of equal for assertion of Date object.
       saved.date.should.eql(expected.date);
       saved.messageId.should.equal(expected.messageId);
       saved.text.should.equal(expected.text);
