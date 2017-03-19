@@ -11,4 +11,4 @@ before(function () {
   });
 });
 
-require('./integration/test_mails');
+require('./integration/mail-api');
