@@ -10,6 +10,7 @@ router.post('/create', (req, res) => {
   mail.recipient = req.body.recipient;
   mail.secretCode = req.body.secretCode;
   mail.to.push(...req.body.to);
+  mail.from.push(...req.body.from);
   mail.cc.push(...req.body.cc);
   mail.bcc.push(...req.body.bcc);
   mail.date = req.body.date;
