@@ -2,7 +2,6 @@
 
 process.env.NODE_ENV = 'test';
 
-require('../app');
 const mongoose = require('mongoose');
 
 before(function () {
