@@ -9,11 +9,11 @@ const Mail = require('../models/mail');
 const app = require('../app');
 
 const assertMailField = (field, actual, expected) => {
-  _.zip(actual[field], expected[field]).forEach((z) => {
-    const s = z[0];
-    const e = z[1];
-    s.address.should.equal(e.address);
-    s.name.should.equal(e.name);
+  _.zip(actual[field], expected[field]).forEach((zipped) => {
+    const oneOfActual = zipped[0];
+    const oneOfExpected = zipped[1];
+    oneOfActual.address.should.equal(oneOfExpected.address);
+    oneOfActual.name.should.equal(oneOfExpected.name);
   });
 };
 
