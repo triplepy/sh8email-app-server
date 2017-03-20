@@ -35,7 +35,6 @@ const assertMail = (actual, expected) => {
 
 describe('POST /api/mails/create', function() {
   it('should save a mail successfully', function(done) {
-    // TODO refactor this. (factory.attrs() does not persist.)
     let expected;
     factory.attrs('mail').then((mail) => {
       expected = mail;
