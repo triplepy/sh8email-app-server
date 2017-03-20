@@ -25,4 +25,13 @@ router.post('/create', (req, res) => {
   });
 });
 
+/* GET show mails */
+router.get('/', (req, res) => {
+  Mail.find({
+    recipient: req.query.recipient,
+  }).exec().then((mails) => {
+    res.send(mails);
+  });
+});
+
 module.exports = router;

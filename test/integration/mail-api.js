@@ -44,3 +44,24 @@ describe('/api/mails/create', function() {
     }).then(done).catch(done);
   });
 });
+
+describe('GET /api/mails', function() {
+  const fixture = {
+    mails: [],
+    recipient: 'getogrand',
+  };
+
+  before(function (done) {
+    const buildOption = _.times(3, () => ({ recipient: fixture.recipient, secretCode: null }));
+    factory.createMany('mail', 3, buildOption).then((mails) => {
+      fixture.mails.push(...mails);
+    }).then(done).catch(done);
+  });
+
+  it('should respond mails list successfully', function (done) {
+    request(app).get(`/api/mails?recipient=${fixture.recipient}`).expect(200).then((res) => {
+      const mails = res.body;
+      mails.length.should.equal(3);
+    }).then(done).catch(done);
+  });
+});
