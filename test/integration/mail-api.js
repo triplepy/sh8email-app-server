@@ -18,21 +18,6 @@ const assertMailField = (field, actual, expected) => {
   });
 };
 
-const assertMail = (actual, expected) => {
-  actual.subject.should.equal(expected.subject);
-  actual.recipient.should.equal(expected.recipient);
-  // nullable assertion
-  should(actual.secretCode).equal(expected.secretCode);
-  moment(actual.date).isSame(moment(expected.date)).should.be.true();
-  actual.messageId.should.equal(expected.messageId);
-  actual.text.should.equal(expected.text);
-  actual.html.should.equal(expected.html);
-  assertMailField('to', actual, expected);
-  assertMailField('from', actual, expected);
-  assertMailField('cc', actual, expected);
-  assertMailField('bcc', actual, expected);
-};
-
 describe('POST /api/mails/create', function() {
   it('should save a mail successfully', function(done) {
     let expected;
@@ -45,7 +30,18 @@ describe('POST /api/mails/create', function() {
 
       return Mail.findById(res.body.mailId);
     }).then((saved) => {
-      assertMail(saved, expected);
+      saved.subject.should.equal(expected.subject);
+      saved.recipient.should.equal(expected.recipient);
+      // nullable assertion
+      should(saved.secretCode).equal(expected.secretCode);
+      moment(saved.date).isSame(moment(expected.date)).should.be.true();
+      saved.messageId.should.equal(expected.messageId);
+      saved.text.should.equal(expected.text);
+      saved.html.should.equal(expected.html);
+      assertMailField('to', saved, expected);
+      assertMailField('from', saved, expected);
+      assertMailField('cc', saved, expected);
+      assertMailField('bcc', saved, expected);
     }).then(done).catch(done);
   });
 });
