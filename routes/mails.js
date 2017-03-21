@@ -30,7 +30,27 @@ router.get('/', (req, res) => {
   Mail.find({
     recipient: req.query.recipient,
   }).exec().then((mails) => {
-    res.send(mails);
+    res.send(mails.map((m) => {
+      const base = {
+        subject: m.subject,
+        recipient: m.recipient,
+        date: m.date,
+      };
+      const addtional = m.secretCode ? {
+        to: [],
+        from: [],
+        cc: [],
+        bcc: [],
+      } : {
+        to: m.to,
+        from: m.from,
+        cc: m.cc,
+        bcc: m.bcc,
+        html: m.html,
+        text: m.text,
+      };
+      return Object.assign(base, addtional);
+    }));
   });
 });
 

@@ -60,15 +60,37 @@ describe('GET /api/mails', function() {
     const buildOption = _.times(3, () => ({ recipient: fixture.recipient, secretCode: null }));
     factory.createMany('mail', 3, buildOption).then((mails) => {
       fixture.mails.push(...mails);
+    }).then(() => factory.create('mail', { recipient: fixture.recipient, secretCode: 'secret1234' })).then((mailWithSecretCode) => {
+      fixture.mails.push(mailWithSecretCode);
     }).then(done).catch(done);
   });
 
   it('should respond mails list successfully', function (done) {
     request(app).get(`/api/mails?recipient=${fixture.recipient}`).expect(200).then((res) => {
       const mails = res.body;
-      mails.length.should.equal(3);
-      mails.forEach((m, i) => {
-        assertMail(m, fixture.mails[i]);
+      mails.length.should.equal(fixture.mails.length);
+      mails.forEach((actual, i) => {
+        const expected = fixture.mails[i];
+        actual.subject.should.equal(expected.subject);
+        actual.recipient.should.equal(expected.recipient);
+        should.not.exist(actual.secretCode);
+        moment(actual.date).isSame(moment(expected.date)).should.be.true();
+        // secretCode should not reveal to user
+        should.not.exist(actual.secretCode);
+        if (expected.secretCode) {
+          // should not have mail fields if there is secretCode
+          actual.to.should.empty();
+          actual.from.should.empty();
+          actual.cc.should.empty();
+          actual.bcc.should.empty();
+        } else {
+          actual.text.should.equal(expected.text);
+          actual.html.should.equal(expected.html);
+          assertMailField('to', actual, expected);
+          assertMailField('from', actual, expected);
+          assertMailField('cc', actual, expected);
+          assertMailField('bcc', actual, expected);
+        }
       });
     }).then(done).catch(done);
   });
