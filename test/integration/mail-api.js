@@ -127,7 +127,40 @@ describe('GET /api/mails/:mailId', function() {
     });
   });
 
-  // TODO Add test reading secret mail
+  describe('CASE: secret mail', function() {
+    const fixture = {
+      mails: [],
+    };
+
+    before(function (done) {
+      factory.createMany('mail', 3).then((mails) => {
+        fixture.mails.push(...mails);
+      }).then(done).catch(done);
+    });
+
+    it('should respond a secret mail successfully', function(done) {
+      const expected = fixture.mails[1];
+      request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', expected.secretCode).expect(200).then((res) => {
+        // TODO refactor assertion code (dup with 'should respond a normal mail successfully' assertion)
+        const actual = res.body;
+        actual.subject.should.equal(expected.subject);
+        actual.recipient.should.equal(expected.recipient);
+        should.not.exist(actual.secretCode);
+        moment(actual.date).isSame(moment(expected.date)).should.be.true();
+        should.not.exist(actual.secretCode);
+        actual.text.should.equal(expected.text);
+        actual.html.should.equal(expected.html);
+        actual.messageId.should.equal(expected.messageId);
+        assertMailField('to', actual, expected);
+        assertMailField('from', actual, expected);
+        assertMailField('cc', actual, expected);
+        assertMailField('bcc', actual, expected);
+      }).then(done).catch(done);
+    });
+
+    // TODO Add test if the secretCode is not matched
+  });
+
   // TODO Add test when 'recipient' GET parameter does not exist
   // TODO Add test when 'recipient' GET parameter is unmatched with database
   // TODO Add test when requested mail does not exist
