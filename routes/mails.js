@@ -59,6 +59,7 @@ router.get('/', (req, res) => {
 router.get('/:mailId', (req, res) => {
   Mail.findOne({
     recipient: req.query.recipient,
+    secretCode: req.query.secretCode,
     id: req.param.mailId,
   }).select('-secretCode').exec().then((mail) => {
     res.send(mail);
