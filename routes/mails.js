@@ -30,6 +30,7 @@ router.get('/', (req, res) => {
   Mail.find({
     recipient: req.query.recipient,
   }).exec().then((mails) => {
+    // TODO refactor using Query#select
     res.send(mails.map((m) => {
       const base = {
         subject: m.subject,
@@ -51,6 +52,16 @@ router.get('/', (req, res) => {
       };
       return Object.assign(base, addtional);
     }));
+  });
+});
+
+/* GET show a mail */
+router.get('/:mailId', (req, res) => {
+  Mail.findOne({
+    recipient: req.query.recipient,
+    id: req.param.mailId,
+  }).select('-secretCode').exec().then((mail) => {
+    res.send(mail);
   });
 });
 
