@@ -25,6 +25,18 @@ const assertAddressFields = (actual, expected) => {
   });
 };
 
+const assertMailResponse = (actual, expected) => {
+  actual.subject.should.equal(expected.subject);
+  actual.recipient.should.equal(expected.recipient);
+  should.not.exist(actual.secretCode);
+  moment(actual.date).isSame(moment(expected.date)).should.be.true();
+  should.not.exist(actual.secretCode);
+  actual.text.should.equal(expected.text);
+  actual.html.should.equal(expected.html);
+  actual.messageId.should.equal(expected.messageId);
+  assertAddressFields(actual, expected);
+};
+
 describe('POST /api/mails/create', function() {
   it('should save a mail successfully', function(done) {
     let expected;
@@ -111,15 +123,7 @@ describe('GET /api/mails/:mailId', function() {
       const expected = fixture.mails[1];
       request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).expect(200).then((res) => {
         const actual = res.body;
-        actual.subject.should.equal(expected.subject);
-        actual.recipient.should.equal(expected.recipient);
-        should.not.exist(actual.secretCode);
-        moment(actual.date).isSame(moment(expected.date)).should.be.true();
-        should.not.exist(actual.secretCode);
-        actual.text.should.equal(expected.text);
-        actual.html.should.equal(expected.html);
-        actual.messageId.should.equal(expected.messageId);
-        assertAddressFields(actual, expected);
+        assertMailResponse(actual, expected);
       }).then(done).catch(done);
     });
   });
@@ -139,17 +143,8 @@ describe('GET /api/mails/:mailId', function() {
     it('should respond a secret mail successfully', function(done) {
       const expected = fixture.mails[1];
       request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', expected.secretCode).expect(200).then((res) => {
-        // TODO refactor assertion code (dup with 'should respond a normal mail successfully' assertion)
         const actual = res.body;
-        actual.subject.should.equal(expected.subject);
-        actual.recipient.should.equal(expected.recipient);
-        should.not.exist(actual.secretCode);
-        moment(actual.date).isSame(moment(expected.date)).should.be.true();
-        should.not.exist(actual.secretCode);
-        actual.text.should.equal(expected.text);
-        actual.html.should.equal(expected.html);
-        actual.messageId.should.equal(expected.messageId);
-        assertAddressFields(actual, expected);
+        assertMailResponse(actual, expected);
       }).then(done).catch(done);
     });
 
