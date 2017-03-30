@@ -7,12 +7,9 @@ factory.setAdapter(new MongooseAdapter());
 
 factory.define('mail', Mail, () => {
   const recipient = chance.word();
-  // TODO make secretCode default to null or undefined.
-  const secretCode = chance.word();
   return {
     subject: chance.sentence(),
     recipient,
-    secretCode,
     to: [{
       address: `${recipient}@sh8.email`,
       name: chance.name(),

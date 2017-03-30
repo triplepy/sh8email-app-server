@@ -53,7 +53,7 @@ describe('GET /api/mails', function() {
   };
 
   before(function (done) {
-    const buildOption = _.times(3, () => ({ recipient: fixture.recipient, secretCode: null }));
+    const buildOption = _.times(3, () => ({ recipient: fixture.recipient }));
     factory.createMany('mail', 3, buildOption).then((mails) => {
       fixture.mails.push(...mails);
     }).then(() => factory.create('mail', { recipient: fixture.recipient, secretCode: 'secret1234' })).then((mailWithSecretCode) => {
@@ -101,8 +101,7 @@ describe('GET /api/mails/:mailId', function() {
     };
 
     before(function (done) {
-      const buildOption = _.times(3, () => ({ secretCode: null }));
-      factory.createMany('mail', 3, buildOption).then((mails) => {
+      factory.createMany('mail', 3).then((mails) => {
         fixture.mails.push(...mails);
       }).then(done).catch(done);
     });
@@ -133,7 +132,8 @@ describe('GET /api/mails/:mailId', function() {
     };
 
     before(function (done) {
-      factory.createMany('mail', 3).then((mails) => {
+      const buildOption = _.times(3, () => ({ secretCode: 'this_is_secret_code' }));
+      factory.createMany('mail', 3, buildOption).then((mails) => {
         fixture.mails.push(...mails);
       }).then(done).catch(done);
     });
