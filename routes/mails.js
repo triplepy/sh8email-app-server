@@ -30,7 +30,6 @@ router.get('/', (req, res) => {
   Mail.find({
     recipient: req.query.recipient,
   }).exec().then((mails) => {
-    // TODO refactor using Query#select
     res.send(mails.map((m) => {
       const base = {
         subject: m.subject,
