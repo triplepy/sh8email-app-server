@@ -9,12 +9,19 @@ const Mail = require('../../models/mail');
 
 const app = require('../../app');
 
-const assertMailField = (field, actual, expected) => {
+const assertAddressField = (field, actual, expected) => {
   _.zip(actual[field], expected[field]).forEach((zipped) => {
     const oneOfActual = zipped[0];
     const oneOfExpected = zipped[1];
     oneOfActual.address.should.equal(oneOfExpected.address);
     oneOfActual.name.should.equal(oneOfExpected.name);
+  });
+};
+
+const assertAddressFields = (actual, expected) => {
+  const fields = ['to', 'from', 'cc', 'bcc'];
+  fields.forEach((field) => {
+    assertAddressField(field, actual, expected);
   });
 };
 
@@ -38,10 +45,7 @@ describe('POST /api/mails/create', function() {
       saved.messageId.should.equal(expected.messageId);
       saved.text.should.equal(expected.text);
       saved.html.should.equal(expected.html);
-      assertMailField('to', saved, expected);
-      assertMailField('from', saved, expected);
-      assertMailField('cc', saved, expected);
-      assertMailField('bcc', saved, expected);
+      assertAddressFields(saved, expected);
     }).then(done).catch(done);
   });
 });
@@ -82,10 +86,7 @@ describe('GET /api/mails', function() {
         } else {
           actual.text.should.equal(expected.text);
           actual.html.should.equal(expected.html);
-          assertMailField('to', actual, expected);
-          assertMailField('from', actual, expected);
-          assertMailField('cc', actual, expected);
-          assertMailField('bcc', actual, expected);
+          assertAddressFields(actual, expected);
         }
       });
     }).then(done).catch(done);
@@ -118,10 +119,7 @@ describe('GET /api/mails/:mailId', function() {
         actual.text.should.equal(expected.text);
         actual.html.should.equal(expected.html);
         actual.messageId.should.equal(expected.messageId);
-        assertMailField('to', actual, expected);
-        assertMailField('from', actual, expected);
-        assertMailField('cc', actual, expected);
-        assertMailField('bcc', actual, expected);
+        assertAddressFields(actual, expected);
       }).then(done).catch(done);
     });
   });
@@ -151,10 +149,7 @@ describe('GET /api/mails/:mailId', function() {
         actual.text.should.equal(expected.text);
         actual.html.should.equal(expected.html);
         actual.messageId.should.equal(expected.messageId);
-        assertMailField('to', actual, expected);
-        assertMailField('from', actual, expected);
-        assertMailField('cc', actual, expected);
-        assertMailField('bcc', actual, expected);
+        assertAddressFields(actual, expected);
       }).then(done).catch(done);
     });
 
