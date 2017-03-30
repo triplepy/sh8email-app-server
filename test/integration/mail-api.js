@@ -104,7 +104,12 @@ describe('GET /api/mails', function() {
     }).then(done).catch(done);
   });
 
-  // TODO Add test when mail list is empty
+  it('should respond empty array when there is no mail which is matched query', function(done) {
+    const recipient = 'not_exist_recipient';
+    request(app).get(`/api/mails?recipient=${recipient}`).expect(200).then((res) => {
+      res.body.should.deepEqual([]);
+    }).then(done).catch(done);
+  });
 });
 
 describe('GET /api/mails/:mailId', function() {
