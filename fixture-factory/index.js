@@ -25,11 +25,11 @@ factory.define('mail', Mail, () => {
       name: chance.name(),
     }],
     cc: [{
-      address: factory.chance('email', { domain: 'sh8.email' }),
+      address: chance.email({ domain: 'sh8.email' }),
       name: chance.name(),
     }],
     bcc: [{
-      address: factory.chance('email', { domain: 'sh8.email' }),
+      address: chance.email({ domain: 'sh8.email' }),
       name: chance.name(),
     }],
     date: () => new Date(),
