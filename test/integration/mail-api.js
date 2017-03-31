@@ -38,9 +38,9 @@ const assertMailResponse = (actual, expected) => {
 };
 
 describe('POST /api/mails/create', function() {
-  it('should save a mail successfully', function(done) {
+  it('should save a mail successfully', function() {
     let expected;
-    factory.attrs('mail').then((mail) => {
+    return factory.attrs('mail').then((mail) => {
       expected = mail;
       return request(app).post('/api/mails/create').send(mail).expect(200);
     }).then((res) => {
@@ -58,7 +58,7 @@ describe('POST /api/mails/create', function() {
       saved.text.should.equal(expected.text);
       saved.html.should.equal(expected.html);
       assertAddressFields(saved, expected);
-    }).then(done).catch(done);
+    });
   });
 });
 
@@ -68,17 +68,17 @@ describe('GET /api/mails', function() {
     recipient: 'getogrand',
   };
 
-  before(function (done) {
+  before(function () {
     const buildOption = _.times(3, () => ({ recipient: fixture.recipient }));
-    factory.createMany('mail', 3, buildOption).then((mails) => {
+    return factory.createMany('mail', 3, buildOption).then((mails) => {
       fixture.mails.push(...mails);
     }).then(() => factory.create('mail', { recipient: fixture.recipient, secretCode: 'secret1234' })).then((mailWithSecretCode) => {
       fixture.mails.push(mailWithSecretCode);
-    }).then(done).catch(done);
+    });
   });
 
-  it('should respond mails list successfully', function (done) {
-    request(app).get(`/api/mails?recipient=${fixture.recipient}`).expect(200).then((res) => {
+  it('should respond mails list successfully', function () {
+    return request(app).get(`/api/mails?recipient=${fixture.recipient}`).expect(200).then((res) => {
       const mails = res.body;
       mails.length.should.equal(fixture.mails.length);
       mails.forEach((actual, i) => {
@@ -101,14 +101,14 @@ describe('GET /api/mails', function() {
           assertAddressFields(actual, expected);
         }
       });
-    }).then(done).catch(done);
+    });
   });
 
-  it('should respond empty array when there is no mail which is matched query', function(done) {
+  it('should respond empty array when there is no mail which is matched query', function() {
     const recipient = 'not_exist_recipient';
-    request(app).get(`/api/mails?recipient=${recipient}`).expect(200).then((res) => {
+    return request(app).get(`/api/mails?recipient=${recipient}`).expect(200).then((res) => {
       res.body.should.deepEqual([]);
-    }).then(done).catch(done);
+    });
   });
 });
 
@@ -118,18 +118,18 @@ describe('GET /api/mails/:mailId', function() {
       mails: [],
     };
 
-    before(function (done) {
-      factory.createMany('mail', 3).then((mails) => {
+    before(function () {
+      return factory.createMany('mail', 3).then((mails) => {
         fixture.mails.push(...mails);
-      }).then(done).catch(done);
+      });
     });
 
-    it('should respond a normal mail successfully', function(done) {
+    it('should respond a normal mail successfully', function() {
       const expected = fixture.mails[1];
-      request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).expect(200).then((res) => {
+      return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).expect(200).then((res) => {
         const actual = res.body;
         assertMailResponse(actual, expected);
-      }).then(done).catch(done);
+      });
     });
   });
 
@@ -138,19 +138,19 @@ describe('GET /api/mails/:mailId', function() {
       mails: [],
     };
 
-    before(function (done) {
+    before(function () {
       const buildOption = _.times(3, () => ({ secretCode: 'this_is_secret_code' }));
-      factory.createMany('mail', 3, buildOption).then((mails) => {
+      return factory.createMany('mail', 3, buildOption).then((mails) => {
         fixture.mails.push(...mails);
-      }).then(done).catch(done);
+      });
     });
 
-    it('should respond a secret mail successfully', function(done) {
+    it('should respond a secret mail successfully', function() {
       const expected = fixture.mails[1];
-      request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', expected.secretCode).expect(200).then((res) => {
+      return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', expected.secretCode).expect(200).then((res) => {
         const actual = res.body;
         assertMailResponse(actual, expected);
-      }).then(done).catch(done);
+      });
     });
 
     // TODO Add test if the secretCode is not matched
