@@ -154,9 +154,15 @@ describe('GET /api/mails/:mailId', function() {
     });
 
     // TODO Add test if the secretCode is not matched
+    it('should respond 403 Forbidden if the secretCode is invalid', function () {
+      const expected = fixture.mails[1];
+      return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', 'invalid_password_1234').expect(403);
+    });
   });
 
   // TODO Add test when 'recipient' GET parameter does not exist
   // TODO Add test when 'recipient' GET parameter is unmatched with database
   // TODO Add test when requested mail does not exist
+
+  // TODO Refactor assertions with mongoose model.toObject()
 });

@@ -58,10 +58,16 @@ router.get('/', (req, res) => {
 router.get('/:mailId', (req, res) => {
   Mail.findOne({
     recipient: req.query.recipient,
-    secretCode: req.header('Sh8-Secret-Code'),
     id: req.param.mailId,
-  }).select('-secretCode').exec().then((mail) => {
-    res.send(mail);
+  }).exec().then((mail) => {
+    if (mail.isSecret() && mail.secretCode !== req.header('Sh8-Secret-Code')) {
+      res.sendStatus(403);
+      return;
+    }
+
+    const result = mail.toObject();
+    delete result.secretCode;
+    res.send(result);
   });
 });
 

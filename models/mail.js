@@ -7,7 +7,7 @@ const addressSchema = new Schema({
   name: String,
 });
 
-const Mail = mongoose.model('Mail', new Schema({
+const mailSchema = new Schema({
   subject: String,
   recipient: String,
   secretCode: String,
@@ -19,6 +19,11 @@ const Mail = mongoose.model('Mail', new Schema({
   messageId: String,
   html: String,
   text: String,
-}));
+});
+mailSchema.methods.isSecret = function () {
+  return Boolean(this.secretCode);
+};
+
+const Mail = mongoose.model('Mail', mailSchema);
 
 module.exports = Mail;
