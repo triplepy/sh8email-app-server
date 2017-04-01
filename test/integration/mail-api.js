@@ -164,6 +164,5 @@ describe('GET /api/mails/:mailId', function() {
     });
   });
 
-  // TODO Add test when 'recipient' GET parameter is unmatched with database
   // TODO Add test when requested mail does not exist
 });
