@@ -135,7 +135,7 @@ describe('GET /api/mails/:mailId', function() {
       });
     });
 
-    it('should respond 404 Not Found if the \'recipient\' GET parameter is missing', function() {
+    it('should respond 400 Bad Request if the \'recipient\' GET parameter is missing', function() {
       const expected = fixture.mails[1];
       return request(app).get(`/api/mails/${expected.id}`).expect(400);
     });
