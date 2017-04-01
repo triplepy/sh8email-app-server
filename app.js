@@ -5,6 +5,11 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('config');
+const winston = require('winston');
+
+// logging
+winston.level = config.logLevel;
+winston.handleExceptions();
 
 // routers
 const mails = require('./routes/mails');
@@ -44,6 +49,7 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  winston.error(err);
   res.status(err.status || 500);
   res.send({
     success: false,
