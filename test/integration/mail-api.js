@@ -116,7 +116,7 @@ describe('GET /api/mails', function() {
 });
 
 describe('GET /api/mails/:mailId', function() {
-  describe('CASE: normal mail', function() {
+  describe('CASE: non-secret mail', function() {
     const fixture = {
       mails: [],
     };
@@ -127,7 +127,7 @@ describe('GET /api/mails/:mailId', function() {
       });
     });
 
-    it('should respond a normal mail successfully', function() {
+    it('should respond a non-secret mail successfully', function() {
       const expected = fixture.mails[1];
       return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).expect(200).then((res) => {
         const actual = res.body;
