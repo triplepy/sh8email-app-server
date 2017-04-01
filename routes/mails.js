@@ -60,6 +60,9 @@ router.get('/:mailId', (req, res) => {
     recipient: req.query.recipient,
     id: req.param.mailId,
   }).exec().then((mail) => {
+    if (!mail) {
+      res.sendStatus(404);
+    }
     if (mail.isSecret() && mail.secretCode !== req.header('Sh8-Secret-Code')) {
       res.sendStatus(403);
       return;

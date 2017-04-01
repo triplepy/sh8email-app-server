@@ -131,6 +131,11 @@ describe('GET /api/mails/:mailId', function() {
         assertMailResponse(actual, expected);
       });
     });
+
+    it('should respond 404 Not Found if the \'recipient\' GET parameter is missing', function() {
+      const expected = fixture.mails[1];
+      return request(app).get(`/api/mails/${expected.id}`).expect(404);
+    });
   });
 
   describe('CASE: secret mail', function() {
@@ -159,7 +164,6 @@ describe('GET /api/mails/:mailId', function() {
     });
   });
 
-  // TODO Add test when 'recipient' GET parameter does not exist
   // TODO Add test when 'recipient' GET parameter is unmatched with database
   // TODO Add test when requested mail does not exist
 });
