@@ -169,6 +169,4 @@ describe('GET /api/mails/:mailId', function() {
       return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', 'invalid_password_1234').expect(403);
     });
   });
-
-  // TODO Add test when requested mail does not exist
 });
