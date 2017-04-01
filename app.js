@@ -52,7 +52,6 @@ app.use((err, req, res, next) => {
   winston.error(err);
   res.status(err.status || 500);
   res.send({
-    success: false,
     message: err.message,
   });
 });

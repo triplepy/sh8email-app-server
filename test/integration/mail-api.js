@@ -44,7 +44,6 @@ describe('POST /api/mails/create', function() {
       expected = mail;
       return request(app).post('/api/mails/create').send(mail).expect(200);
     }).then((res) => {
-      res.body.success.should.equal(true);
       res.body.mailId.should.not.empty();
 
       return Mail.findById(res.body.mailId);

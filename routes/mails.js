@@ -19,7 +19,6 @@ router.post('/create', (req, res, next) => {
   mail.text = req.body.text;
   mail.save().then((m) => {
     res.send({
-      success: true,
       mailId: m.id,
     });
   }).catch(next);
