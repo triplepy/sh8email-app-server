@@ -134,7 +134,13 @@ describe('GET /api/mails/:mailId', function() {
 
     it('should respond 404 Not Found if the \'recipient\' GET parameter is missing', function() {
       const expected = fixture.mails[1];
-      return request(app).get(`/api/mails/${expected.id}`).expect(404);
+      return request(app).get(`/api/mails/${expected.id}`).expect(400);
+    });
+
+    it('should respond 404 Not Found if the requested mail is not present', function() {
+      const expected = fixture.mails[1];
+      const id = 'not_exist_id';
+      return request(app).get(`/api/mails/${id}?recipient=${expected.recipient}`).expect(404);
     });
   });
 

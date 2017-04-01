@@ -51,17 +51,25 @@ router.get('/', (req, res, next) => {
       };
       return Object.assign(base, addtional);
     }));
-  });
+  }).catch(next);
 });
 
 /* GET show a mail */
-router.get('/:mailId', (req, res) => {
+router.get('/:mailId', (req, res, next) => {
+  const recipient = req.query.recipient;
+  const mailId = req.params.mailId;
+
+  if (!recipient || !mailId) {
+    res.sendStatus(400);
+  }
+
   Mail.findOne({
-    recipient: req.query.recipient,
-    id: req.param.mailId,
+    recipient,
+    _id: mailId,
   }).exec().then((mail) => {
     if (!mail) {
       res.sendStatus(404);
+      return;
     }
     if (mail.isSecret() && mail.secretCode !== req.header('Sh8-Secret-Code')) {
       res.sendStatus(403);
