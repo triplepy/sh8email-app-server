@@ -4,7 +4,7 @@ const Mail = require('../models/mail');
 const router = express.Router();
 
 /* POST create a mail */
-router.post('/create', (req, res) => {
+router.post('/create', (req, res, next) => {
   const mail = new Mail();
   mail.subject = req.body.subject;
   mail.recipient = req.body.recipient;
@@ -22,11 +22,11 @@ router.post('/create', (req, res) => {
       success: true,
       mailId: m.id,
     });
-  });
+  }).catch(next);
 });
 
 /* GET show mails */
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   Mail.find({
     recipient: req.query.recipient,
   }).exec().then((mails) => {
@@ -71,7 +71,7 @@ router.get('/:mailId', (req, res) => {
     const result = mail.toObject();
     delete result.secretCode;
     res.send(result);
-  });
+  }).catch(next);
 });
 
 module.exports = router;
