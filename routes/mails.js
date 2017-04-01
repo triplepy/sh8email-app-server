@@ -26,8 +26,15 @@ router.post('/create', (req, res, next) => {
 
 /* GET show mails */
 router.get('/', (req, res, next) => {
+  const recipient = req.query.recipient;
+
+  if (!recipient) {
+    res.sendStatus(400);
+    return;
+  }
+
   Mail.find({
-    recipient: req.query.recipient,
+    recipient,
   }).exec().then((mails) => {
     res.send(mails.map((m) => {
       const base = {

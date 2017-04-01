@@ -109,6 +109,10 @@ describe('GET /api/mails', function() {
       res.body.should.deepEqual([]);
     });
   });
+
+  it('should respond 400 Bad Request if the \'recipient\' GET parameter is missing', function() {
+    return request(app).get('/api/mails').expect(400);
+  });
 });
 
 describe('GET /api/mails/:mailId', function() {
