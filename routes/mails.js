@@ -60,6 +60,7 @@ router.get('/:mailId', (req, res, next) => {
 
   if (!recipient || !mailId) {
     res.sendStatus(400);
+    return;
   }
 
   Mail.findOne({
