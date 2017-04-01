@@ -153,7 +153,6 @@ describe('GET /api/mails/:mailId', function() {
       });
     });
 
-    // TODO Add test if the secretCode is not matched
     it('should respond 403 Forbidden if the secretCode is invalid', function () {
       const expected = fixture.mails[1];
       return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', 'invalid_password_1234').expect(403);
