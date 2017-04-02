@@ -98,6 +98,11 @@ describe('GET /api/mails', function() {
           actual.html.should.equal(expected.html);
           assertAddressFields(actual, expected);
         }
+        if (expected.secretCode) {
+          actual.isSecret.should.be.true();
+        } else {
+          actual.isSecret.should.be.false();
+        }
       });
     });
   });

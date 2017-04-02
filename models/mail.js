@@ -19,10 +19,13 @@ const mailSchema = new Schema({
   messageId: String,
   html: String,
   text: String,
+}, {
+  toObject: { virtuals: true },
+  toJSON: { virtuals: true },
 });
-mailSchema.methods.isSecret = function () {
+mailSchema.virtual('isSecret').get(function () {
   return Boolean(this.secretCode);
-};
+});
 
 const Mail = mongoose.model('Mail', mailSchema);
 

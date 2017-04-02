@@ -41,6 +41,7 @@ router.get('/', (req, res, next) => {
         subject: m.subject,
         recipient: m.recipient,
         date: m.date,
+        isSecret: m.isSecret,
       };
       const addtional = m.secretCode ? {
         to: [],
@@ -78,7 +79,7 @@ router.get('/:mailId', (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (mail.isSecret() && mail.secretCode !== req.header('Sh8-Secret-Code')) {
+    if (mail.isSecret && mail.secretCode !== req.header('Sh8-Secret-Code')) {
       res.sendStatus(403);
       return;
     }
