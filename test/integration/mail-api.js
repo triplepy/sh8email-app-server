@@ -30,6 +30,7 @@ const assertMailResponse = (actual, expected) => {
   actual.recipient.should.equal(expected.recipient);
   moment(actual.date).isSame(moment(expected.date)).should.be.true();
   should.not.exist(actual.secretCode);
+  should.exist(actual.isSecret);
   actual.text.should.equal(expected.text);
   actual.html.should.equal(expected.html);
   actual.messageId.should.equal(expected.messageId);
@@ -51,6 +52,7 @@ describe('POST /api/mails/create', function() {
       saved.recipient.should.equal(expected.recipient);
       // nullable assertion
       should(saved.secretCode).equal(expected.secretCode);
+      should.exist(saved.isSecret);
       moment(saved.date).isSame(moment(expected.date)).should.be.true();
       saved.messageId.should.equal(expected.messageId);
       saved.text.should.equal(expected.text);
