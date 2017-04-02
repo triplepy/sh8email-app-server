@@ -28,7 +28,6 @@ const assertAddressFields = (actual, expected) => {
 const assertMailResponse = (actual, expected) => {
   actual.subject.should.equal(expected.subject);
   actual.recipient.should.equal(expected.recipient);
-  should.not.exist(actual.secretCode);
   moment(actual.date).isSame(moment(expected.date)).should.be.true();
   should.not.exist(actual.secretCode);
   actual.text.should.equal(expected.text);
