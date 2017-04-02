@@ -6,9 +6,19 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('config');
 const winston = require('winston');
+const slackTransport = require('slack-winston').Slack;
 
 // logging
 winston.level = config.logLevel;
+if (config.util.getEnv('NODE_ENV') === 'production') {
+  winston.add(slackTransport, {
+    domain: 'sh8email',
+    token: process.env.SH8_SLACK_TOKEN,
+    webhook_url: process.env.SH8_SLACK_WEBHOOK_URL,
+    channel: 'sh8-server-error',
+    level: 'error',
+  });
+}
 winston.handleExceptions();
 
 // routers
