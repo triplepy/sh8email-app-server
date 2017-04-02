@@ -10,7 +10,7 @@
     "space-before-function-paren": "off",
     "func-names": "off",
     "newline-per-chained-call": "off",
-    "no-unused-vars": ["error", {"argsIgnorePattern": "next"}]
+    "no-unused-vars": ["error", {"args": "none"}]
   },
   "env": {
     "node": true,
