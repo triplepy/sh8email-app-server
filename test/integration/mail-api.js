@@ -88,7 +88,7 @@ describe('GET /api/mails', function() {
         moment(actual.date).isSame(moment(expected.date)).should.be.true();
         // secretCode should not reveal to user
         should.not.exist(actual.secretCode);
-        if (expected.secretCode) {
+        if (expected.isSecret) {
           // should not have mail fields if there is secretCode
           actual.to.should.empty();
           actual.from.should.empty();
@@ -98,11 +98,6 @@ describe('GET /api/mails', function() {
           actual.text.should.equal(expected.text);
           actual.html.should.equal(expected.html);
           assertAddressFields(actual, expected);
-        }
-        if (expected.secretCode) {
-          actual.isSecret.should.be.true();
-        } else {
-          actual.isSecret.should.be.false();
         }
       });
     });
