@@ -84,7 +84,6 @@ describe('GET /api/mails', function() {
         const expected = fixture.mails[i];
         actual.subject.should.equal(expected.subject);
         actual.recipient.should.equal(expected.recipient);
-        should.not.exist(actual.secretCode);
         moment(actual.date).isSame(moment(expected.date)).should.be.true();
         // secretCode should not reveal to user
         should.not.exist(actual.secretCode);
