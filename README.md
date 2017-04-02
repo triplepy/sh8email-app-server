@@ -19,9 +19,9 @@ Run `npm test`.
   - GET /api/mails?recipient=*recipient*
   - Response
     - Success: List of [mail](#mail-model-specification)s represented as JSON
-    ```javascript
-    [mail1, mail2, mail3, ...]
-    ```
+      ```javascript
+      [mail1, mail2, mail3, ...]
+      ```
       - There is `isSecret` boolean field
       - Respond empty array when there is no mail which is matched query
     - Fail
