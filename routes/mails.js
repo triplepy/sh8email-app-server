@@ -37,26 +37,16 @@ router.get('/', (req, res, next) => {
     recipient,
   }).exec().then((mails) => {
     res.send(mails.map((m) => {
-      const base = {
-        subject: m.subject,
-        recipient: m.recipient,
-        date: m.date,
-        isSecret: m.isSecret,
-      };
-      const addtional = m.secretCode ? {
-        to: [],
-        from: [],
-        cc: [],
-        bcc: [],
-      } : {
-        to: m.to,
-        from: m.from,
-        cc: m.cc,
-        bcc: m.bcc,
-        html: m.html,
-        text: m.text,
-      };
-      return Object.assign(base, addtional);
+      const mobj = m.toObject();
+      if (m.isSecret) {
+        mobj.from = [];
+        mobj.to = [];
+        mobj.cc = [];
+        mobj.bcc = [];
+        delete mobj.html;
+        delete mobj.text;
+      }
+      return mobj;
     }));
   }).catch(next);
 });

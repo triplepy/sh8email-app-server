@@ -7,6 +7,12 @@ const addressSchema = new Schema({
   name: String,
 });
 
+const mailTransform = (doc, ret, options) => {
+  const result = ret;
+  delete result.secretCode;
+  return result;
+};
+
 const mailSchema = new Schema({
   subject: String,
   recipient: String,
@@ -20,8 +26,8 @@ const mailSchema = new Schema({
   html: String,
   text: String,
 }, {
-  toObject: { virtuals: true },
-  toJSON: { virtuals: true },
+  toObject: { transform: mailTransform, virtuals: true },
+  toJSON: { transform: mailTransform, virtuals: true },
 });
 mailSchema.virtual('isSecret').get(function () {
   return Boolean(this.secretCode);
