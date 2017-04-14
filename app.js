@@ -10,7 +10,7 @@ const slackTransport = require('slack-winston').Slack;
 
 // logging
 winston.level = config.logLevel;
-if (config.util.getEnv('NODE_ENV') === 'production') {
+if (config.slackErrorLogging) {
   winston.add(slackTransport, {
     domain: 'sh8email',
     token: process.env.SH8_SLACK_TOKEN,
