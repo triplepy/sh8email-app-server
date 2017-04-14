@@ -3,6 +3,9 @@
 process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
+// factory-girl setup
+require('../fixture-factory');
+
 
 before(function (done) {
   mongoose.connection.once('connected', () => {
