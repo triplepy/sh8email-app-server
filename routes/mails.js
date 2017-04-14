@@ -74,9 +74,7 @@ router.get('/:mailId', (req, res, next) => {
       return;
     }
 
-    const result = mail.toObject();
-    delete result.secretCode;
-    res.send(result);
+    res.send(mail.toObject());
   }).catch(next);
 });
 
