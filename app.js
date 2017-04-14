@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const logger = require('morgan');
+const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -39,7 +39,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 if (config.util.getEnv('NODE_ENV') !== 'test') {
-  app.use(logger('dev'));
+  app.use(morgan('dev'));
 }
 
 app.use(bodyParser.json());
