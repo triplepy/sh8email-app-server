@@ -46,6 +46,23 @@ Run `npm test`.
 
 ## Mail Model Specification
 
-We use mail model which is based on [mail model of nodemailer/mailparser](https://github.com/nodemailer/mailparser#mail-object).
-But there are some additional properties.
+We use mail model which is based on [mail model of nodemailer/mailparser](https://nodemailer.com/extras/mailparser/#mail-object).
+But there is a difference representing `address` object likes `from`, `to`, `cc` and `bcc`.
+We removed `html`, `text` property of `address` object and spreaded `value` property. Therefore the `address` object is shown as below example.
+
+```javascript
+// Representation of `to` property in address object
+[
+  {
+    address: 'andris+123@kreata.ee',
+    name: 'Andris Reinman'
+  },
+  {
+    address: 'andris.reinman@gmail.com',
+    name: ''
+  }
+]
+```
+
+Also, there are some additional properties.
 - isSecret: Boolean. `true` if the mail is a secret mail, otherwise `false`.
