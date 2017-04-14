@@ -4,9 +4,13 @@ process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
 
-before(function () {
+before(function (done) {
   mongoose.connection.once('connected', () => {
-    mongoose.connection.db.dropDatabase();
+    mongoose.connection.db.dropDatabase().then(() => {
+      done();
+    }).catch((err) => {
+      throw err;
+    });
   });
 });
 
