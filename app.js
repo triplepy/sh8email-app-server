@@ -1,5 +1,4 @@
 const express = require('express')
-const path = require('path')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
@@ -31,10 +30,6 @@ mongoose.Promise = global.Promise
 
 const app = express()
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'pug')
-
 if (config.useMorgan) {
   app.use(morgan('dev'))
 }
@@ -42,7 +37,6 @@ if (config.useMorgan) {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api/mails', mails)
 

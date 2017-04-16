@@ -17,8 +17,6 @@
     "moment": "^2.18.0",
     "mongoose": "^4.9.0",
     "morgan": "~1.7.0",
-    "pug": "~2.0.0-beta10",
-    "serve-favicon": "~2.3.2",
     "slack-winston": "0.0.7",
     "winston": "^2.3.1"
   },
