@@ -1,15 +1,15 @@
-const express = require('express');
-const path = require('path');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const config = require('config');
-const winston = require('winston');
-const slackTransport = require('slack-winston').Slack;
+const express = require('express')
+const path = require('path')
+const morgan = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const config = require('config')
+const winston = require('winston')
+const slackTransport = require('slack-winston').Slack
 
 // logging
-winston.level = config.logLevel;
+winston.level = config.logLevel
 if (config.slackErrorLogging) {
   winston.add(slackTransport, {
     domain: 'sh8email',
@@ -17,53 +17,53 @@ if (config.slackErrorLogging) {
     webhook_url: process.env.SH8_SLACK_WEBHOOK_URL,
     channel: 'sh8-server-error',
     level: 'error',
-  });
+  })
 }
-winston.handleExceptions();
+winston.handleExceptions()
 
 // routers
-const mails = require('./routes/mails');
+const mails = require('./routes/mails')
 
 // database setup
-mongoose.connect(config.dbUri);
+mongoose.connect(config.dbUri)
 // Use native promises
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise
 
-const app = express();
+const app = express()
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'pug')
 
 if (config.useMorgan) {
-  app.use(morgan('dev'));
+  app.use(morgan('dev'))
 }
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/api/mails', mails);
+app.use('/api/mails', mails)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+  const err = new Error('Not Found')
+  err.status = 404
+  next(err)
+})
 
 // error handler
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.message = err.message
+  res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  winston.error(err);
-  res.status(err.status || 500);
+  winston.error(err)
+  res.status(err.status || 500)
   res.send({
     message: err.message,
-  });
-});
+  })
+})
 
-module.exports = app;
+module.exports = app

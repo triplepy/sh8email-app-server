@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const addressSchema = new Schema({
   address: String,
   name: String,
-});
+})
 
 const mailTransform = (doc, ret, options) => {
-  const result = ret;
-  delete result.secretCode;
-  return result;
-};
+  const result = ret
+  delete result.secretCode
+  return result
+}
 
 const mailSchema = new Schema({
   subject: String,
@@ -28,11 +28,11 @@ const mailSchema = new Schema({
 }, {
   toObject: { transform: mailTransform, virtuals: true },
   toJSON: { transform: mailTransform, virtuals: true },
-});
+})
 mailSchema.virtual('isSecret').get(function () {
-  return Boolean(this.secretCode);
-});
+  return Boolean(this.secretCode)
+})
 
-const Mail = mongoose.model('Mail', mailSchema);
+const Mail = mongoose.model('Mail', mailSchema)
 
-module.exports = Mail;
+module.exports = Mail

@@ -1,12 +1,12 @@
-const factory = require('factory-girl').factory;
-const MongooseAdapter = require('factory-girl').MongooseAdapter;
-const chance = require('chance').Chance();
-const Mail = require('../models/mail');
+const factory = require('factory-girl').factory
+const MongooseAdapter = require('factory-girl').MongooseAdapter
+const chance = require('chance').Chance()
+const Mail = require('../models/mail')
 
-factory.setAdapter(new MongooseAdapter());
+factory.setAdapter(new MongooseAdapter())
 
 factory.define('mail', Mail, () => {
-  const recipient = chance.word();
+  const recipient = chance.word()
   return {
     subject: chance.sentence(),
     recipient,
@@ -33,5 +33,5 @@ factory.define('mail', Mail, () => {
     messageId: chance.hash(),
     text: chance.paragraph(),
     html: `<p>${chance.paragraph()}</p>`,
-  };
-});
+  }
+})
