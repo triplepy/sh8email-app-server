@@ -1,7 +1,8 @@
 {
   "extends": "airbnb-base",
   "plugins": [
-    "import"
+    "import",
+    "promise"
   ],
   "rules": {
     "no-param-reassign": ["error", {"props": true, "ignorePropertyModificationsFor": ["res"]}],
