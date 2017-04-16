@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const addressSchema = new Schema({
-  address: String,
+  address: {
+    type: String,
+    required: true,
+  },
   name: String,
 })
 
@@ -14,8 +17,14 @@ const mailTransform = (doc, ret, options) => {
 }
 
 const mailSchema = new Schema({
-  subject: String,
-  recipient: String,
+  subject: {
+    type: String,
+    required: true,
+  },
+  recipient: {
+    type: String,
+    required: true,
+  },
   secretCode: String,
   to: [addressSchema],
   from: [addressSchema],
