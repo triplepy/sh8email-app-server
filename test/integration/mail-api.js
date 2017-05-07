@@ -62,7 +62,7 @@ describe('POST /api/mails/create', function() {
   })
 })
 
-describe('GET /api/mails', function() {
+describe('GET /api/recipient/:recipient/mails', function() {
   const fixture = {
     mails: [],
     recipient: 'getogrand',
@@ -78,7 +78,7 @@ describe('GET /api/mails', function() {
   })
 
   it('should respond mails list successfully', function () {
-    return request(app).get(`/api/mails?recipient=${fixture.recipient}`).expect(200).then((res) => {
+    return request(app).get(`/api/recipient/${fixture.recipient}/mails`).expect(200).then((res) => {
       const mails = res.body
       mails.length.should.equal(fixture.mails.length)
       mails.forEach((actual, i) => {
@@ -103,19 +103,19 @@ describe('GET /api/mails', function() {
     })
   })
 
-  it('should respond empty array when there is no mail which is matched query', function() {
+  it('should respond empty array when there is no mail which is matched params', function() {
     const recipient = 'not_exist_recipient'
-    return request(app).get(`/api/mails?recipient=${recipient}`).expect(200).then((res) => {
+    return request(app).get(`/api/recipient/${recipient}/mails`).expect(200).then((res) => {
       res.body.should.deepEqual([])
     })
   })
 
-  it('should respond 400 Bad Request if the \'recipient\' GET parameter is missing', function() {
-    return request(app).get('/api/mails').expect(400)
+  it('should respond 404 Not Found if the \'recipient\' params is missing', function() {
+    return request(app).get('/api/mails').expect(404)
   })
 })
 
-describe('GET /api/mails/:mailId', function() {
+describe('GET /api/recipient/:recipient/mails/:mailId', function() {
   describe('CASE: non-secret mail', function() {
     const fixture = {
       mails: [],
@@ -129,21 +129,21 @@ describe('GET /api/mails/:mailId', function() {
 
     it('should respond a non-secret mail successfully', function() {
       const expected = fixture.mails[1]
-      return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).expect(200).then((res) => {
+      return request(app).get(`/api/recipient/${expected.recipient}/mails/${expected.id}`).expect(200).then((res) => {
         const actual = res.body
         assertMailResponse(actual, expected)
       })
     })
 
-    it('should respond 400 Bad Request if the \'recipient\' GET parameter is missing', function() {
+    it('should respond 404 Not Found if the \'recipient\' params is missing', function() {
       const expected = fixture.mails[1]
-      return request(app).get(`/api/mails/${expected.id}`).expect(400)
+      return request(app).get(`/api/mails/${expected.id}`).expect(404)
     })
 
     it('should respond 404 Not Found if the requested mail is not present', function() {
       const expected = fixture.mails[1]
       const id = 'not_exist_id'
-      return request(app).get(`/api/mails/${id}?recipient=${expected.recipient}`).expect(404)
+      return request(app).get(`/api/recipient/${expected.recipient}/mails/${id}`).expect(404)
     })
   })
 
@@ -161,7 +161,7 @@ describe('GET /api/mails/:mailId', function() {
 
     it('should respond a secret mail successfully', function() {
       const expected = fixture.mails[1]
-      return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', expected.secretCode).expect(200).then((res) => {
+      return request(app).get(`/api/recipient/${expected.recipient}/mails/${expected.id}`).set('Sh8-Secret-Code', expected.secretCode).expect(200).then((res) => {
         const actual = res.body
         assertMailResponse(actual, expected)
       })
@@ -169,7 +169,7 @@ describe('GET /api/mails/:mailId', function() {
 
     it('should respond 403 Forbidden if the secretCode is invalid', function () {
       const expected = fixture.mails[1]
-      return request(app).get(`/api/mails/${expected.id}?recipient=${expected.recipient}`).set('Sh8-Secret-Code', 'invalid_password_1234').expect(403)
+      return request(app).get(`/api/recipient/${expected.recipient}/mails/${expected.id}`).set('Sh8-Secret-Code', 'invalid_password_1234').expect(403)
     })
   })
 })

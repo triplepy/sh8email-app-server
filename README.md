@@ -16,7 +16,7 @@ Run `npm test`.
     - Success: JSON representation of the saved [mail](#mail-model-specification)
     - Fail: 500 Error
 - Show mails list
-  - GET /api/mails?recipient=*recipient*
+  - GET /api/recipient/*:recipient*/mails
   - Response
     - Success: List of [mail](#mail-model-specification)s represented as JSON
       ```javascript
@@ -25,24 +25,22 @@ Run `npm test`.
       - There is `isSecret` boolean field
       - Respond empty array when there is no mail which is matched query
     - Fail
-      - Respond 400 Bad Request if the 'recipient' GET parameter is missing
+      - Respond 404 Not Found if the 'recipient' params is missing
 - Show a non-secret mail
-  - GET /api/mails/*mailId*?recipient=*recipient*
+  - GET /api/recipient/*:recipient*/mails/*:id*
   - Response
     - Success: A [mail](#mail-model-specification) represented as JSON
     - Fail
-      - Respond 400 Bad Request if any GET parameter is missing
-      - Respond 404 Not Found if the requested mail is not present
+      - Respond 404 Not Found if the 'recipient' params is missing or the requested mail is not present
 - Show a secret mail
-  - GET /api/mails/*mailId*?recipient=*recipient*
+  - GET /api/recipient/*:recipient*/mails/*:id*
   - Header required
     - Sh8-Secret-Code: the secretCode
   - Response
     - Success: A [mail](#mail-model-specification) represented as JSON
     - Fail
-      - Respond 400 Bad Request if any GET parameter is missing
+      - Respond 404 Not Found if the 'recipient' params is missing or the requested mail is not present
       - Respond 403 Forbidden if the secretCode is invalid
-      - Respond 404 Not Found if the requested mail is not present
 
 ## Mail Model Specification
 
