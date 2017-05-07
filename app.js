@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const mongoose = require('mongoose')
 const config = require('config')
 const winston = require('winston')
@@ -37,6 +38,7 @@ if (config.useMorgan) {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(cors({ origin: config.corsOrigin }))
 
 app.use('/api/', mails)
 

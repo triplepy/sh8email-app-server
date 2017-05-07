@@ -3,4 +3,5 @@ module.exports = {
   logLevel: 'debug',
   slackErrorLogging: false,
   useMorgan: true,
+  corsOrigin: '*',
 }
